@@ -5,12 +5,10 @@
 #ifndef CUWR_APP_H
 #define CUWR_APP_H
 
-int shogi_init();
-
-/**
- * Closes app - close files etc.
- * @return
- */
-int shogi_close();
+enum SHOGI_STATE{
+    SHOGI_STATE_NEW_GAME_MENU,
+    SHOGI_STATE_GAME,
+    SHOGI_STATE_HISTORY_SHOW,
+};
 
 #endif //CUWR_APP_H

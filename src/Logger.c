@@ -8,7 +8,7 @@
 #include <time.h>
 #include "Logger.h"
 
-FILE *log;
+FILE *log_file;
 bool initialized = false;
 static char *log_level_strings[] = {
         "FATAL",
@@ -20,8 +20,8 @@ static char *log_level_strings[] = {
 
 
 int shogi_logger_init() {
-    log = fopen("Shogi.log", "a"); // open for appending
-    if (log == NULL) {
+    log_file = fopen("Shogi.log", "a"); // open for appending
+    if (log_file == NULL) {
         printf("Cannot open Shogi.log for appending\n");
         return 1;
     }
@@ -48,17 +48,17 @@ void shogi_logger_log(enum SHOGI_LOGGER_LOG_LEVEL level, const char *fmt, ...) {
     va_list args;
     va_start(args, fmt);
 
-    fprintf(log, "%s : ", prefix);
-    vfprintf(log, fmt, args);
-    fprintf(log, "\n");
+    fprintf(log_file, "%s : ", prefix);
+    vfprintf(log_file, fmt, args);
+    fprintf(log_file, "\n");
 
     va_end(args);
 
-    fflush(log);
+    fflush(log_file);
 }
 
 int shogi_logger_close() {
-    return fclose(log);
+    return fclose(log_file);
 }
 
 

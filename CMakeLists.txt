@@ -4,7 +4,13 @@ project(shogi)
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_CXX_FLAGS "${CMAKE_CSS_FLAGS} -Wall -Wextra -Werror")
 
-set(SOURCE_FILES src/App.c src/ResourceManager.c src/Model.c src/GuiController.c src/StateManager.c src/App.h src/GuiController.h src/Model.h src/ResourceManager.h src/StateManager.h src/Utils.h src/Logger.h src/Logger.c)
+set(SOURCE_FILES
+        src/App.c src/App.h
+        src/ResourceManager.c src/ResourceManager.h
+        src/Model.c src/Model.h
+        src/Logger.c src/Logger.h
+        src/Utils.h
+        )
 
 add_executable(shogi ${SOURCE_FILES})
 
