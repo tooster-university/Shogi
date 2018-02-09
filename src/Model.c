@@ -2,6 +2,7 @@
 // Created by Tooster on 22.01.2018.
 //
 
+#include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
@@ -591,7 +592,7 @@ void shogi_model_timer_set(guint32 initial_time) {
 
 void shogi_model_timer_decrease(clock_t delta) {
     if (!model->TIMED_MODE || mode == WHITE_WIN || mode == BLACK_WIN) return;
-    model->timer[is_black_turn ? 1 : 0] -= (gint64) (intptr_t) delta;
+    model->timer[is_black_turn ? 1 : 0] -= (gint64) delta;
     if (model->timer[is_black_turn ? 1 : 0] <= 0) {
         model->timer[is_black_turn ? 1 : 0] = 0;
         mode = is_black_turn ? WHITE_WIN : BLACK_WIN;

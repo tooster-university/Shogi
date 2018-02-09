@@ -2,6 +2,7 @@
 // Created by Tooster on 22.01.2018.
 //
 
+#include <stdint.h>
 #include <string.h>
 #include "App.h"
 #include "ResourceManager.h"
@@ -462,7 +463,7 @@ static void info_response(GtkWidget *w, gpointer data) {
     GtkWidget *dialog = gtk_dialog_new_with_buttons("Info",
                                                     GTK_WINDOW(window),
                                                     GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
-                                                    NULL);
+                                                    GTK_BUTTONS_NONE);
     GtkWidget *context_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
     GtkWidget *frame = gtk_frame_new(NULL);
     gtk_box_pack_start(GTK_BOX(context_area), frame, FALSE, TRUE, 0);
@@ -528,8 +529,13 @@ static void info_response(GtkWidget *w, gpointer data) {
     );
     gtk_label_set_use_markup(GTK_LABEL (label), TRUE);
     gtk_label_set_justify(GTK_LABEL(label), GTK_JUSTIFY_FILL);
-    gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, TRUE, 0);
-
+    GtkWidget *sw = gtk_scrolled_window_new(NULL, NULL);
+    gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW (sw),
+                                   GTK_POLICY_NEVER,
+                                   GTK_POLICY_AUTOMATIC);
+    gtk_container_add(GTK_CONTAINER (sw), label);
+    gtk_box_pack_start(GTK_BOX(vbox), sw, TRUE, TRUE, 0);
+    gtk_widget_set_size_request(sw, -1, 400);
     gtk_widget_show_all(frame);
 
     gtk_dialog_run(GTK_DIALOG(dialog));
