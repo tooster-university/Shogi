@@ -2,7 +2,7 @@
 // Created by Tooster on 22.01.2018.
 //
 
-#include <mem.h>
+#include <string.h>
 #include "App.h"
 #include "ResourceManager.h"
 #include "Logger.h"
