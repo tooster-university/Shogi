@@ -51,7 +51,7 @@ typedef struct _shogi_model {
 #define IDX(board, col, row) board[ROW(row)][COL(col)] // accepts col and row as in board coordinates (top right = <1,1>)
 
 #define TO_SECONDS(millis) (((millis) / 1000) % 60)
-#define TO_MINUTES(millis) (((millis) / (1000*60)) % 60)
+#define TO_MINUTES(millis) ((millis) / (1000*60))
 
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -187,7 +187,7 @@ void shogi_model_timer_set(guint32 initial_time);
  * Decreases current players timer by delta seconds
  * @param delta time to be removed from current players timer
  */
-void shogi_model_timer_decrease(guint32 delta);
+void shogi_model_timer_decrease(clock_t delta);
 
 /**
  * Execute to make current player resign

@@ -20,6 +20,7 @@ static GtkWidget *hand_labels[2][SHOGI_PAWN_COUNT]; // 0 for white, 1 for black.
 static GtkWidget *hand_buttons[2][SHOGI_PAWN_COUNT]; // ...same
 static GtkWidget *resign_button[2];
 static gboolean TIMER_RUN = FALSE;
+static clock_t t0 = 0;
 
 /// Macros returning clicked square on board as on image
 #define SHOGI_TO_BOARD_COL(x) (((x)/SHOGI_SCALE_FACTOR < 68 || (x)/SHOGI_SCALE_FACTOR > 932) ?\
@@ -42,7 +43,7 @@ static int shogi_init() {
         return 2;
 
 
-    g_timeout_add(10, (GSourceFunc) timer_cb, NULL);
+    g_timeout_add(15, (GSourceFunc) timer_cb, NULL);
 
     for (int i = 0; i < SHOGI_PAWN_COUNT; ++i) {
         hand_labels[0][i] = gtk_label_new(NULL);
@@ -66,7 +67,7 @@ static void close_window(void) {
     shogi_model_close();
 }
 
-static void clear_board(void) {
+static void redraw_board(void) {
     cairo_t *cr;
 
     cr = cairo_create(surface);
@@ -105,7 +106,7 @@ static void clear_board(void) {
 }
 
 static void ui_reload() {
-    clear_board(); // first redraw to check for wins at print the king capture
+    redraw_board(); // first redraw to check for wins at print the king capture
     gtk_widget_queue_draw(board);
 
     enum SHOGI_MODEL_MODE model_mode = shogi_model_get_mode();
@@ -138,7 +139,7 @@ static void ui_reload() {
             shogi_model_promote(FALSE);
     }
 
-    clear_board(); // second redraw to print promotions
+    redraw_board(); // second redraw to print promotions
     gtk_widget_queue_draw(board);
 
     char timer_label[65];
@@ -194,7 +195,7 @@ static gboolean configure_event_cb(GtkWidget *widget, GdkEventConfigure *event, 
                                                 gtk_widget_get_allocated_height(widget));
 
     /* Initialize the surface to white */
-    clear_board();
+    redraw_board();
 
     gint w;
     gint h;
@@ -207,7 +208,7 @@ static gboolean configure_event_cb(GtkWidget *widget, GdkEventConfigure *event, 
 }
 
 // Redraw gameboard
-static gboolean clear_board_cb(GtkWidget *widget, cairo_t *cr, gpointer data) {
+static gboolean redraw_board_cb(GtkWidget *widget, cairo_t *cr, gpointer data) {
     cairo_set_source_surface(cr, surface, 0, 0);
     cairo_paint(cr);
 
@@ -235,7 +236,13 @@ static gboolean gameboard_press_event_cb(GtkWidget *widget, GdkEventButton *even
 
 static gboolean timer_cb(gpointer data) {
 
-    if (!TIMER_RUN) return TRUE;
+    if (!TIMER_RUN) {
+        t0 = clock();
+        return TRUE;
+    }
+    if (t0 == 0)
+        t0 = clock();
+    clock_t t1 = clock();
 
     char timer_label[65];
 
@@ -257,8 +264,9 @@ static gboolean timer_cb(gpointer data) {
         ui_reload();
     }
 
-    shogi_model_timer_decrease(10);
+    shogi_model_timer_decrease((t1 - t0) * 1000 / CLOCKS_PER_SEC); // get actual time difference
 
+    t0 = t1;
     return TRUE;
 }
 
@@ -699,7 +707,7 @@ static void activate(GtkApplication *app, gpointer data) {
 
     /* Signals used to handle the backing surface */
     g_signal_connect (board, "draw",
-                      G_CALLBACK(clear_board_cb), NULL);
+                      G_CALLBACK(redraw_board_cb), NULL);
     g_signal_connect (board, "configure-event",
                       G_CALLBACK(configure_event_cb), NULL);
 

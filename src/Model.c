@@ -589,7 +589,7 @@ void shogi_model_timer_set(guint32 initial_time) {
     model->timer[0] = model->timer[1] = initial_time;
 }
 
-void shogi_model_timer_decrease(guint32 delta) {
+void shogi_model_timer_decrease(clock_t delta) {
     if (!model->TIMED_MODE || mode == WHITE_WIN || mode == BLACK_WIN) return;
     model->timer[is_black_turn ? 1 : 0] -= (gint64) (intptr_t) delta;
     if (model->timer[is_black_turn ? 1 : 0] <= 0) {
