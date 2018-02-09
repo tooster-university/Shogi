@@ -512,7 +512,7 @@ static void info_response(GtkWidget *w, gpointer data) {
                                   "|   [H]:Horse (promoted Bishop) [D]:Dragon( promoted Rook)    [O]: Promoted S, N, L, P                |\n"
                                   "+-----------------------------------------------------------------------------------------------------+\n"
                                   "|<span weight='bold'>    ###    ###    ###    # #     |     \\ /     |      #     \\#/    #|#    ###                        </span>|\n"
-                                  "|<span weight='bold'>    #K#    #G#     S             L      B     -R-     P     #B#    -R-    #O#                        </span>|\n"
+                                  "|<span weight='bold'>    #K#    #G#     S             L      B     -R-     P     #H#    -D-    #O#                        </span>|\n"
                                   "|<span weight='bold'>    ###     #     # #     N            / \\     |            /#\\    #|#     #                         </span>|\n"
                                   "+-----------------------------------------------------------------------------------------------------+\n"
                                   "</span>\n\n"
