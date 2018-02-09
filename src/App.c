@@ -513,7 +513,7 @@ static void info_response(GtkWidget *w, gpointer data) {
                                   "+-----------------------------------------------------------------------------------------------------+\n"
                                   "|<span weight='bold'>    ###    ###    ###    # #     |     \\ /     |      #     \\#/    #|#    ###                        </span>|\n"
                                   "|<span weight='bold'>    #K#    #G#     S             L      B     -R-     P     #B#    -R-    #O#                        </span>|\n"
-                                  "|<span weight='bold'>    ###     #     # #     N            / \\     |            /#\\    #|#      #                        </span>|\n"
+                                  "|<span weight='bold'>    ###     #     # #     N            / \\     |            /#\\    #|#     #                         </span>|\n"
                                   "+-----------------------------------------------------------------------------------------------------+\n"
                                   "</span>\n\n"
                                   "Moves history are saved in western notation format (move number) (black move) (white move)\n"
