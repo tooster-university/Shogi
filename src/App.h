@@ -5,10 +5,13 @@
 #ifndef CUWR_APP_H
 #define CUWR_APP_H
 
-enum SHOGI_STATE{
-    SHOGI_STATE_NEW_GAME_MENU,
-    SHOGI_STATE_GAME,
-    SHOGI_STATE_HISTORY_SHOW,
-};
+#include <gtk/gtk.h>
+#include <stdlib.h>
+#include "Model.h"
+#include "Utils.h"
+
+static gboolean timer_cb(gpointer data);
+
+static void resign_cb();
 
 #endif //CUWR_APP_H

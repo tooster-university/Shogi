@@ -8,7 +8,7 @@
 
 /// enum for pawns
 
-extern double SHOGI_SCALE_FACTOR;
+#define     SHOGI_UI_SCALE                     0.7
 
 #define     SHOGI_PAWN_IS_BLACK(pawn)       ((pawn) == SHOGI_PAWN_NONE ? 0 : ((pawn)%2 == 1))
 #define     SHOGI_PAWN_IS_WHITE(pawn)       ((pawn) == SHOGI_PAWN_NONE ? 0 : ((pawn)%2 == 0))
@@ -34,6 +34,14 @@ enum SHOGI_PAWN {
 #define     SHOGI_PAWN_DETAILED_IS_PROMOTABLE(pawn) ((pawn) != SHOGI_PAWN_DETAILED_NONE && \
                                                      (pawn) >= SHOGI_PAWN_PROMOTABLE_START && \
                                                      (pawn) < SHOGI_PAWN_PROMOTABLE_END)
+#define     SHOGI_PAWN_TO_BASE_TYPE(pawn_detailed)  (enum SHOGI_PAWN)((pawn_detailed) == SHOGI_PAWN_DETAILED_NONE ? \
+                                                                                                SHOGI_PAWN_NONE : \
+                                                                                                ((pawn_detailed) >= SHOGI_PAWN_PROMOTABLE_END ? ((pawn_detailed) - SHOGI_PAWN_PRO_OFFSET) / 2 : (pawn_detailed) / 2))
+#define     SHOGI_PAWN_TO_DETAILED_TYPE(pawn_base, is_black) ((enum SHOGI_PAWN_DETAILED)((pawn_base) == SHOGI_PAWN_NONE ?\
+                                                                                                                        SHOGI_PAWN_DETAILED_NONE : \
+                                                                                                                        ((pawn_base)*2 + ((is_black) ? 1 : 0))))
+#define     SHOGI_PAWN_IS_PROMOTED(pawn_detailed) ((pawn_detailed) >= SHOGI_PAWN_DETAILED_S_PRO_WHITE)
+
 enum SHOGI_PAWN_DETAILED {
     SHOGI_PAWN_DETAILED_K_WHITE,
     SHOGI_PAWN_DETAILED_K_BLACK,
