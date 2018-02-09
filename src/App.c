@@ -158,19 +158,21 @@ static void ui_reload() {
 
     enum SHOGI_MODEL_MODE mm = shogi_model_get_mode();
     gboolean any_won = (mm == WHITE_WIN || mm == BLACK_WIN);
+    int *white_hand = shogi_model_get_hand(TRUE);
+    int *black_hand = shogi_model_get_hand(FALSE);
     for (int i = SHOGI_PAWN_G; i < SHOGI_PAWN_COUNT; ++i) {
-        gtk_widget_set_sensitive(hand_buttons[0][i], any_won ? FALSE : !shogi_model_is_black_turn());
-        gtk_widget_set_sensitive(hand_buttons[1][i], any_won ? FALSE : shogi_model_is_black_turn());
+        gtk_widget_set_sensitive(hand_buttons[0][i],
+                                 any_won ? FALSE : (!shogi_model_is_black_turn() && white_hand[i] > 0));
+        gtk_widget_set_sensitive(hand_buttons[1][i],
+                                 any_won ? FALSE : (shogi_model_is_black_turn() && black_hand[i] > 0));
     }
 
     gtk_widget_set_sensitive(resign_button[0], any_won ? FALSE : !shogi_model_is_black_turn());
     gtk_widget_set_sensitive(resign_button[1], any_won ? FALSE : shogi_model_is_black_turn());
 
-    int *white_hand = shogi_model_get_hand(TRUE);
-    int *black_hand = shogi_model_get_hand(FALSE);
 
     for (int j = 0; j < SHOGI_PAWN_COUNT; ++j) {
-        char label_text[61];
+        char label_text[62];
         sprintf(label_text, "<span foreground='#231916' weight='bold' font='15'>%d</span>", white_hand[j]);
         gtk_label_set_label(GTK_LABEL(hand_labels[0][j]), label_text);
         sprintf(label_text, "<span foreground='#231916' weight='bold' font='15'>%d</span>", black_hand[j]);
@@ -185,7 +187,7 @@ static void ui_reload() {
 }
 
 // Create board surface for rendering
-static gboolean configure_event_cb(GtkWidget *widget, GdkEventConfigure *event, gpointer data) {
+static gboolean configure_event_cb(GtkWidget *widget) {
     if (surface)
         cairo_surface_destroy(surface);
 
@@ -737,8 +739,10 @@ static void activate(GtkApplication *app, gpointer data) {
 
     footer = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 32);
     footer_player_label = gtk_label_new(NULL);
+    GtkWidget *footer_label_frame = gtk_frame_new(NULL);
     gtk_label_set_use_markup(GTK_LABEL(footer_player_label), TRUE);
-    gtk_box_pack_start(GTK_BOX(footer), footer_player_label, TRUE, TRUE, 0);
+    gtk_container_add(GTK_CONTAINER(footer_label_frame), footer_player_label);
+    gtk_box_pack_start(GTK_BOX(footer), footer_label_frame, TRUE, FALSE, 0);
 
 
     gtk_box_pack_start(GTK_BOX(vbox), gtk_separator_new(GTK_ORIENTATION_VERTICAL), TRUE, TRUE, 0);
