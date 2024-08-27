@@ -2,6 +2,8 @@
 
 This is a C++ implementation of the Shogi game for linux. It consists of a GUI app for playing Shogi on a hot-seat computer and a simple engine implementing standard Shogi rules.
 
+![Screenshot from 2024-08-27 15-38-15](https://github.com/user-attachments/assets/5631fc3b-10c8-4bbd-8ec0-e2c284014b54)
+
 ## Functionality
 
 - hot-seat playthrough with GUI
